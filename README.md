@@ -11,6 +11,6 @@ Now given suppose the number of interactions is 10, 0.8 raised to the power of 1
 
 Data Sources: 
 
-Covid-19 Data on the number of county-level cases : Obtained via Usafacts covid trackerhttps://usafacts.org/visualizations/coronavirus-covid-19-spread-map/
+Covid-19 Data on the number of county-level cases : Obtained via Usafacts covid tracker: https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/
 
 County Populations: US census 2019 projections : https://www.census.gov/data/tables/time-series/demo/popest/2010s-state-total.html#par_textimage_1574439295
