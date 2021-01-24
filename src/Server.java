@@ -10,8 +10,9 @@ import java.util.ArrayList;
 
 public class Server {
 
-	static ArrayList<String> states = new ArrayList();
-	static ArrayList<Double> cases = new ArrayList();
+	static ArrayList<String> population = new ArrayList();
+	static ArrayList<String> cases = new ArrayList();
+	
 	public static void main(String[] args) throws IOException {
 		readInfo();
 		 ServerSocket serverSocket = new ServerSocket(4242);
@@ -22,14 +23,24 @@ public class Server {
 	     PrintWriter writer = new PrintWriter(socket.getOutputStream());
 	     String recieved = reader.readLine();
 	     String[] data = recieved.split(" ");
-	     String state = data[0];
-	     int people = Integer.parseInt(data[1]);
-	     System.out.println("Recieved: " + state + people);
-	     double numCases = cases.get(findState(state));
-	     double chances = calculateChances((cases.get(findState(state))*3) / 100000 , people );
-	     writer.write(numCases + " " + chances);
-	     writer.println();
-	     writer.flush();
+	     String myState = data[0];
+	     int numPeople = Integer.parseInt(data[1]);
+	     String myCounty = data[2].toLowerCase();
+	     
+	     double myPopulation = getPopulation(myCounty, myState);
+	     double myCases = getCases(myCounty , myState);
+	     if(myPopulation == -1 || myCases == -1) {
+	    	 writer.write("error");
+	    	 writer.println();
+	    	 writer.flush();
+	     } else {
+	    	 System.out.println(myPopulation + " " + myCases);
+		     double chances = calculateChances((myCases*3)/myPopulation , numPeople);
+		     System.out.println(chances);
+		     writer.write(myCases + " " + chances);
+		     writer.println();
+		     writer.flush();
+	     }
 	     
 	}
 	
@@ -43,25 +54,42 @@ public class Server {
             if (line == null || line.equals("")) {
                 break;
             }
-            //System.out.println(line);
-            String[] info = line.split(",");
-            states.add(info[0].toLowerCase());
-            cases.add(Double.parseDouble(info[1]));
-            //System.out.println(info[0] + info[1]);
+            cases.add(line);
+        }
+        File f2 = new File("C:\\Users\\shaur\\git\\CovidExposureProbability\\src\\PopulationData");
+        FileReader fr2 = new FileReader(f2);
+        BufferedReader bfr2 = new BufferedReader(fr2);
+        line = "";
+        while (line != null) {
+        	line = bfr2.readLine();
+        	if(line == null || line.equals("")) {
+        		break;
+        	}
+        	population.add(line);
         }
     }
 	
-	public static  int findState(String state) {
-		for (int i = 0 ; i< states.size() ; i++) {
-			if (states.get(i).equals(state)) {
-				return i;
+	public static int getPopulation(String county, String state) {
+		for (String i : population) {
+			String[] data = i.split(",");
+			if (data[0].toLowerCase().contains(county) && data[1].contains(state)) {
+				return Integer.parseInt(data[2]);
 			}
 		}
 		return -1;
 	}
 	
+	public static int getCases(String county, String state) {
+		for (String i : cases) {
+			String[] data = i.split(",");
+			if (data[0].toLowerCase().contains(county) && data[1].contains(state)) {
+				return Integer.parseInt(data[2]);
+			}
+		}
+		return -1;
+	}
 	public static double calculateChances(double p , int n) {
-		return (1 - Math.pow(1-p, n));
+		return 100*(1 - Math.pow(1-p, n));
 	}
 	
 	

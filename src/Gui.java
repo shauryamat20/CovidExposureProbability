@@ -23,6 +23,12 @@ public class Gui extends JComponent implements Runnable {
 	JLabel caseInfo;
 	JLabel percentage;
 	JLabel additionalInfoField;
+
+	JLabel enterCounty;
+
+	JTextField yourCounty;
+
+	private JLabel note;
 	
 	public void run() {
 		welcomeFrame = new JFrame("Welcome");
@@ -57,10 +63,14 @@ public class Gui extends JComponent implements Runnable {
         
         JPanel pane2 = new JPanel(new GridLayout(10,1));
         pane2.setBackground(Color.magenta);
-        enterState = new JLabel("Enter your state below: " , JLabel.CENTER);
+        enterState = new JLabel("Enter your state abbreviation below (2 letter abbseviation) : " , JLabel.CENTER);
         pane2.add(enterState , BorderLayout.CENTER);
-        yourState = new JTextField("Enter your state");
+        yourState = new JTextField("Enter your state ");
         pane2.add(yourState);
+        enterCounty = new JLabel("Enter your county below:");
+        pane2.add(enterCounty);
+        yourCounty = new JTextField("Enter your county");
+        pane2.add(yourCounty);
         enterInteractions = new JLabel("Enter the number of people you interacter with" , JLabel.CENTER);
         pane2.add(enterInteractions);
         numInteractions = new JTextField("Enter number here");
@@ -68,6 +78,8 @@ public class Gui extends JComponent implements Runnable {
         calculate = new JButton("Calculate");
         calculate.addActionListener(actionListener);
         pane2.add(calculate);
+        note = new JLabel("Note: not all county reporting has been accurate");
+        pane2.add(note);
         content2.add(pane2, BorderLayout.CENTER);
         infoFrame.setLocationRelativeTo(null);
         infoFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -89,12 +101,10 @@ public class Gui extends JComponent implements Runnable {
         pane3.add(caseInfo , JLabel.CENTER);
         percentage = new JLabel("Percentage " , JLabel.CENTER);
         pane3.add(percentage , BorderLayout.CENTER);
-        additionalInfoField = new JLabel("<html> It is important to note that this data represents your state as a whole. The actual likelihood"
-        		+ "of contacting the disease would largely vary depending on your population density. A higher population density would increase the probability"
-        		+ "while a lower density would acordingly lower the chances of this calculation.</html>" , JLabel.CENTER);
+        additionalInfoField = new JLabel("<html> PLEASE CONTINUE TO FOLLOW CDC GUIDELINES. STAY INDOORS, AVOID GATHERINGS AND WEAR MASKS. IN NO WAY SHOULD THIS CALCULATION BE\"\r\n" + 
+        		        		" TAKEN AS A REASON TO SOCIALIZE OR VIOLATE QUARANTINE MANDATES.</html>" , JLabel.CENTER);
         pane3.add(additionalInfoField);
-        moreInfo = new JLabel("<html>PLEASE CONTINUE TO FOLLOW CDC GUIDELINES. STAY INDOORS, AVOID GATHERINGS AND WEAR MASKS. IN NO WAY SHOULD THIS CALCULATION BE"
-        		+ " TAKEN AS A REASON TO SOCIALIZE OR VIOLATE QUARANTINE MANDATES. </html>");
+        moreInfo = new JLabel("<html> The covid case data had been obtained from usafacts.org while population data has been achieved from US census projections. </html>");
         pane3.add(moreInfo);
         content3.add(pane3, BorderLayout.CENTER);
         finalFrame.setLocationRelativeTo(null);

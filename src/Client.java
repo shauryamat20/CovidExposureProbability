@@ -1,3 +1,4 @@
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -14,6 +15,7 @@ public class Client {
 
 	static Gui myGui;
 	private static String myState;
+	private static String myCounty;
 	private static int numPeople;
 	
 	public static void main(String[] args) throws UnknownHostException, IOException {
@@ -34,17 +36,25 @@ public class Client {
                 	myGui.finalFrame.setVisible(true);
                 	myState = myGui.yourState.getText();
                 	numPeople = Integer.parseInt(myGui.numInteractions.getText());
-                	writer.write(myState.toLowerCase() + " " + numPeople);
+                	myCounty = myGui.yourCounty.getText();
+                	writer.write(myState.toUpperCase() + " " + numPeople + " " + myCounty.toLowerCase());
                 	writer.println();
                 	writer.flush();
                 	System.out.println(myState + " " + numPeople);
                 	try {
 						String output = reader.readLine();
-						String[] info = output.split(" ");
-						myGui.percentage.setText(Double.toString(Double.parseDouble(info[1])*100));
-						String myString = "According to CDC info there have been " +  info[0]+ " cases in your state per 100K individuals";
-						myGui.caseInfo.setText("<html>" + myString + " Below is the probability computed by the information provided using a Binomial Probability algorithm</html>");
-						myGui.caseInfo.validate();
+						if (output.equals("error")) {
+							JOptionPane.showMessageDialog(myGui, "Data for this county is not available, try another county.");
+							myGui.infoFrame.setVisible(false);
+		                	myGui.finalFrame.setVisible(true);
+						} else {
+							String[] info = output.split(" ");
+							myGui.caseInfo.setText("<html> There have been " + info[0] + " cases in your county in the last 7 days. Below"
+									+ " is the likelihood of you interacting with a covid positive individual given on the number of interactions you "
+									+ " provided in your county. </html>");
+							myGui.percentage.setText(info[1]);
+						}
+						
                 	} catch (IOException e1) {
 						e1.printStackTrace();
 					}
