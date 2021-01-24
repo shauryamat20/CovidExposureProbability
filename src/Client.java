@@ -44,9 +44,10 @@ public class Client {
                 	try {
 						String output = reader.readLine();
 						if (output.equals("error")) {
-							JOptionPane.showMessageDialog(myGui, "Data for this county is not available, try another county.");
-							myGui.infoFrame.setVisible(false);
-		                	myGui.finalFrame.setVisible(true);
+							myGui.finalFrame.setVisible(false);
+		                	myGui.infoFrame.setVisible(true);
+							JOptionPane.showMessageDialog(myGui, "Data for this county is either  unavailable, or incorrect county or state.");
+							
 						} else {
 							String[] info = output.split(" ");
 							myGui.caseInfo.setText("<html> There have been " + info[0] + " cases in your county in the last 7 days. Below"
