@@ -35,7 +35,7 @@ public class Server {
 	    	 writer.flush();
 	     } else {
 	    	 System.out.println(myPopulation + " " + myCases);
-		     double chances = calculateChances((myCases*3)/myPopulation , numPeople);
+		     double chances = calculateChances((myCases*3)/myPopulation , numPeople, myPopulation);
 		     System.out.println(chances);
 		     writer.write(myCases + " " + chances);
 		     writer.println();
@@ -88,9 +88,19 @@ public class Server {
 		}
 		return -1;
 	}
-	public static double calculateChances(double p , int n) {
-		return 100*(1 - Math.pow(1-p, n));
+	public static double calculateChances(double p , int n, double population) {
+		double combinationNum = factorial(population) / (factorial(n) * factorial(population-n));
+		return 100*combinationNum*Math.pow(p, n)*Math.pow(1-p, population-n);
 	}
+	public static double factorial(double n) {
+	      double fact = 1;
+	      int i = 1;
+	      while(i <= n) {
+	         fact *= i;
+	         i++;
+	      }
+	      return fact;
+	   }
 	
 	
 
