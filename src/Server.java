@@ -93,13 +93,10 @@ public class Server {
 		return 100*combinationNum*Math.pow(p, n)*Math.pow(1-p, population-n);
 	}
 	public static double factorial(double n) {
-	      double fact = 1;
-	      int i = 1;
-	      while(i <= n) {
-	         fact *= i;
-	         i++;
+	      if(n==1) {
+	    	  return 1;
 	      }
-	      return fact;
+	      return n*factorial(n-1);
 	   }
 	
 	
